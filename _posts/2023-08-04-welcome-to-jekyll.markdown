@@ -1,29 +1,13 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
-date:   2023-08-04 23:48:17 +0900
-categories: jekyll update
+title:  "Jekyll and So-Simple-theme"
+date:   2023-08-05 23:35:17 +0900
+categories: jekyll theme
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+루비, jekyll, 그리고 so simple 테마로 시작.
+어렵다.. 포기하지 말고 계속해서 만져보자!
 
-Jekyll requires blog post files to be named according to the following format:
+당장 이 포스트도 파일명과 그 내용의 타이틀이 다르다.
+어떤 결과가 나오는지 지켜보자.
 
-`YEAR-MONTH-DAY-title.MARKUP`
-
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
-
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+그나저나 X트위터의 로고는 왜 반영 안되니?
