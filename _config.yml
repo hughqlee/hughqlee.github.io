@@ -30,9 +30,10 @@ twitter_username: hughqlee
 github_username:  hughqlee
 
 # Build settings
-theme: minima
+# theme: minima
 plugins:
-  - jekyll-feed
+  - jekyll-remote-theme
+remote_theme: "mmistakes/so-simple-theme@3.2.0"  
 
 # Exclude from processing.
 # The following items will not be processed, by default.
