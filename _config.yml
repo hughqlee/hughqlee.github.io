@@ -38,7 +38,7 @@ remote_theme: "mmistakes/so-simple-theme@3.2.0"
 footer_links:
   - title: Twitter
     url: https://twitter.com/hughqlee
-    icon: fa-brands fa-square-x-twitter
+    icon: fab fa-twitter
   - title: Github
     url: https://github.com/hughqlee
     icon: fab fa-github
