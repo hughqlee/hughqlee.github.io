@@ -21,7 +21,7 @@
 title: Henry's Side Projects
 email: ""
 description: >- # this means to ignore newlines until "baseurl:"
-  Henry Lee's Side Project Blog. Daegu, South Korea.
+  Henry Lee. Computer Vision, Python. Daegu, South Korea.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: hughqlee
@@ -38,13 +38,13 @@ remote_theme: "mmistakes/so-simple-theme@3.2.0"
 footer_links:
   - title: Twitter
     url: https://twitter.com/hughqlee
-    icon: fab fa-x-twitter-square
+    icon: fab fa-square-x-twitter
   - title: Github
     url: https://github.com/hughqlee
-    icon: fab fa-github-square
+    icon: fab fa-github
   - title: LinkedIn
     url: https://linkedin.com/in/hughqlee
-    icon: fab fa-linkedin-square
+    icon: fab fa-linkedin
 
 # Exclude from processing.
 # The following items will not be processed, by default.
