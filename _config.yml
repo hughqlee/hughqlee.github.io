@@ -21,19 +21,30 @@
 title: Henry's Side Projects
 email: ""
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  Henry Lee's Side Project Blog. Daegu, South Korea.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: hughqlee
-github_username:  hughqlee
+# twitter_username: hughqlee
+# github_username:  hughqlee
+logo: /images/IMG_0973.JPG
+skin: "/assets/css/skins/dark.css"
 
 # Build settings
 # theme: minima
 plugins:
   - jekyll-remote-theme
 remote_theme: "mmistakes/so-simple-theme@3.2.0"  
+
+footer_links:
+  - title: Twitter
+    url: https://twitter.com/hughqlee
+    icon: fab fa-x-twitter-square
+  - title: Github
+    url: https://github.com/hughqlee
+    icon: fab fa-github-square
+  - title: LinkedIn
+    url: https://linkedin.com/in/hughqlee
+    icon: fab fa-linkedin-square
 
 # Exclude from processing.
 # The following items will not be processed, by default.
