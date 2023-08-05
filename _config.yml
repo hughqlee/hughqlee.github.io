@@ -20,7 +20,7 @@ locale: en-US
 title: "Henry's Side Projects"
 description: "Henry Lee. Computer Vision, Python. Daegu, South Korea."
 baseurl: "" # the subpath of your site, e.g. "/blog"
-url: "" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url: "https://hughqlee.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 logo: "/images/IMG_0973.JPG" # path of site logo, e.g. "/assets/images/logo.png"
 date_format: "%B %-d, %Y"
 read_time: true
