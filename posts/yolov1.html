@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry Hyunkyu Lee</title>
+</head>
+<body>
+    <header>
+        <h1>Henry Lee (이현규)</h1>
+        <nav>
+            <ul>
+                <li>
+                    <a href="../index.html">CV</a>
+                </li>
+                <li>
+                    <a href="../til.html">TIL</a>
+                </li>
+                <li>
+                    <a href="list.html">Post</a>
+                </li>
+            </ul>
+            <hr>
+        </nav>
+    </header>
+    <main>
+        <article>
+            <table style="width: 100%;">
+                <thead>
+                    <h2>You Only Look Once: Unified, Real-Time Object Detection</h2>
+                    <p>2015</p>
+                    <p>
+                        Joseph Redmon∗, Santosh Divvala∗†, Ross Girshick¶, Ali Farhadi∗†<br>
+                        University of Washington∗, Allen Institute for AI†, Facebook AI Research¶
+                    </p>
+                    <ul>
+                        <li>𝐵=2  의 효과를 검증하기 위한 구현임.</li>
+                        <li>Computing Limits로 Tensorflow에서 제공하는 ImageNet 데이터셋으로 사전 훈련된(pre-trained) VGG16 네트워크를 Backbone으로 사용함.</li>
+                    </ul>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Import Library
+                        </td>
+                        <td>
+                            <pre>
+                                <code>
+import cv2
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+print(tf.__version__)
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+try:
+    tf.config.experimental.set_memory_growth(gpus[0], True)
+except RuntimeError as e:
+    # 프로그램 시작시에 메모리 증가가 설정되어야만 합니다
+    print(e)
+                                </code>
+                            </pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Pre-trained VGG16 Backbone
+                        </td>
+                        <td>
+                            <pre>
+                                <code>
+backbone = tf.keras.applications.vgg16.VGG16(
+    include_top=False,
+    weights='imagenet',
+    input_shape=(448,448,3)
+)
+                                </code>
+                            </pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Leaky ReLU
+                        </td>
+                        <td>
+                            <pre>
+                                <code>
+for layer in backbone.layers:
+    layer.trainable = False
+    try:
+        layer.activation = tf.keras.layers.LeakyReLU(alpha=0.1)
+    except:
+        pass
+                                </code>
+                            </pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Head, Dropout, Featuremap
+                        </td>
+                        <td>
+                            <pre>
+                                <code>
+x = tf.keras.layers.Conv2D(
+    filters=1024,
+    kernel_size=3,
+    padding='same',
+    activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+)(backbone.output)
+x = tf.keras.layers.Conv2D(
+        filters=1024,
+        kernel_size=3,
+        strides=(2,2),
+        padding='same',
+        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+    )(x)
+
+x = tf.keras.layers.Conv2D(
+        filters=1024,
+        kernel_size=3,
+        padding='same',
+        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+    )(x)
+x = tf.keras.layers.Conv2D(
+        filters=1024,
+        kernel_size=3,
+        padding='same',
+        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+    )(x)
+
+x = tf.keras.layers.Flatten()(x)
+x = tf.keras.layers.Dense(
+        4096,
+        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+    )(x)
+x = tf.keras.layers.Dropout(0.5)(x)
+
+x = tf.keras.layers.Dense(
+        1470,
+        activation='sigmoid',
+    )(x)
+x = tf.keras.layers.Reshape((7,7,30))(x)
+
+yolo = tf.keras.Model(inputs=backbone.input, outputs=x, name='Yolo')
+                                </code>
+                            </pre>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+    </main>
+</body>
+</html>
