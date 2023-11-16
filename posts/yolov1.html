@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Henry Hyunkyu Lee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
     <header>
@@ -110,40 +115,171 @@ x = tf.keras.layers.Conv2D(
     activation=tf.keras.layers.LeakyReLU(alpha=0.1),
 )(backbone.output)
 x = tf.keras.layers.Conv2D(
-        filters=1024,
-        kernel_size=3,
-        strides=(2,2),
-        padding='same',
-        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
-    )(x)
+    filters=1024,
+    kernel_size=3,
+    strides=(2,2),
+    padding='same',
+    activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+)(x)
 
 x = tf.keras.layers.Conv2D(
-        filters=1024,
-        kernel_size=3,
-        padding='same',
-        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
-    )(x)
+    filters=1024,
+    kernel_size=3,
+    padding='same',
+    activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+)(x)
 x = tf.keras.layers.Conv2D(
-        filters=1024,
-        kernel_size=3,
-        padding='same',
-        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
-    )(x)
+    filters=1024,
+    kernel_size=3,
+    padding='same',
+    activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+)(x)
 
 x = tf.keras.layers.Flatten()(x)
 x = tf.keras.layers.Dense(
-        4096,
-        activation=tf.keras.layers.LeakyReLU(alpha=0.1),
-    )(x)
+    4096,
+    activation=tf.keras.layers.LeakyReLU(alpha=0.1),
+)(x)
 x = tf.keras.layers.Dropout(0.5)(x)
 
 x = tf.keras.layers.Dense(
-        1470,
-        activation='sigmoid',
-    )(x)
+    1470,
+    activation='sigmoid',
+)(x)
 x = tf.keras.layers.Reshape((7,7,30))(x)
 
 yolo = tf.keras.Model(inputs=backbone.input, outputs=x, name='Yolo')
+                                </code>
+                            </pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Loss Function
+                        </td>
+                        <td>
+                            <pre>
+                                <code>
+h_grid, w_grid = 7, 7
+
+def get_iou(box1, box2):
+    h_offset, w_offset = np.indices((h_grid, w_grid))
+
+    x1, y1, w1, h1 = tf.unstack(box1, num=4, axis=-1) 
+    area_box1 = w1 * h1
+
+    x1_global = (w_offset + x1) / w_grid
+    y1_global = (h_offset + y1) / h_grid
+    x1_min, y1_min = x1_global - w1/2, y1_global - h1/2
+    x1_max, y1_max = x1_global + w1/2, y1_global + h1/2
+
+    x2, y2, w2, h2 = tf.unstack(box2, num=4, axis=-1)
+    area_box2 = w2 * h2
+
+    x2_global = (w_offset + x2) / w_grid
+    y2_global = (h_offset + y2) / h_grid
+    x2_min, y2_min = x2_global - w2/2, y2_global - h2/2
+    x2_max, y2_max = x2_global + w2/2, y2_global + h2/2
+
+    x_i_min = tf.math.maximum(x1_min, x2_min)
+    y_i_min = tf.math.maximum(y1_min, y2_min)
+    x_i_max = tf.math.minimum(x1_max, x2_max)
+    y_i_max = tf.math.minimum(y1_max, y2_max)
+
+    w_i = x_i_max - x_i_min
+    h_i = y_i_max - y_i_min
+    w_i = tf.math.maximum(0., w_i)
+    h_i = tf.math.maximum(0., h_i)
+    area_i = w_i * h_i
+
+    union = area_box1 + area_box2 - area_i + 1e-8
+    return tf.expand_dims((area_i / union), axis=-1)
+                                </code>
+                            </pre>
+                            <pre>
+                                <code>
+def loss_function(true, pred, coord=5.0, noobj=0.5):
+    true_conf = true[..., :1]
+    true_boxes = true[..., 1:5]
+    true_classes = true[..., 5:]
+    
+    box1_conf = pred[..., :1]
+    box1_boxes = pred[..., 1:5]
+    box2_conf = pred[..., 5:6]
+    box2_boxes = pred[..., 6:10]
+    pred_classes = pred[..., 10:]
+
+    # class, shape = (batch, 7, 7, 20)
+    cls_loss = tf.math.square(pred_classes-true_classes)
+    cls_loss = tf.where(
+        tf.math.equal(true_conf, 1.0),
+        cls_loss,
+        0.0
+    )
+    cls_loss = tf.math.reduce_sum(cls_loss, axis=[1,2,3])
+
+    # boxes, shape = (batch, 7, 7, 4)
+    xy_loss = tf.math.square(
+        box1_boxes[..., 0:2]-true_boxes[..., 0:2]
+    )
+    wh_loss = tf.math.square(
+        tf.math.sqrt(box1_boxes[..., 2:4])-tf.math.sqrt(true_boxes[..., 2:4])
+    ) # 작은 상자의 오차에 가중치를 더 두기 위해서 제곱근(square root)을 씌워 예측
+    box1_loss = xy_loss + wh_loss
+    box1_loss = tf.where(
+        tf.math.equal(true_conf, 1.0),
+        box1_loss,
+        0.0
+    )
+
+    xy_loss = tf.math.square(
+        box2_boxes[..., 0:2]-true_boxes[..., 0:2]
+    )
+    wh_loss = tf.math.square(
+        tf.math.sqrt(box2_boxes[..., 2:4])-tf.math.sqrt(true_boxes[..., 2:4])
+    )
+    box2_loss = xy_loss + wh_loss
+    box2_loss = tf.where(
+        tf.math.equal(true_conf, 1.0),
+        box2_loss,
+        0.0
+    )
+
+    iou_box1 = get_iou(true_boxes, box1_boxes)
+    iou_box2 = get_iou(true_boxes, box2_boxes)
+
+    box1_loss = tf.where(
+        tf.math.greater_equal(iou_box1, iou_box2), 
+        box1_loss*coord, 
+        0.
+    )
+    box2_loss = tf.where(
+        tf.math.less(iou_box1, iou_box2), 
+        box2_loss*coord, 
+        0.
+    )
+    box_loss = box1_loss + box2_loss
+    box_loss = tf.math.reduce_sum(box_loss, axis=[1,2,3])
+
+    # confidence, shape = (batch, 7, 7, 1)
+    box1_conf_loss = tf.math.square(box1_conf - true_conf*iou_box1)
+    box1_conf_loss = tf.where(
+        tf.math.greater_equal(iou_box1, iou_box2), 
+        box1_conf_loss, 
+        box1_conf_loss*noobj
+    )
+
+    box2_conf_loss = tf.math.square(box2_conf - true_conf*iou_box2)
+    box2_conf_loss = tf.where(
+        tf.math.less(iou_box1, iou_box2), 
+        box2_conf_loss, 
+        box2_conf_loss*noobj
+    )
+
+    conf_loss = box1_conf_loss + box2_conf_loss
+    conf_loss = tf.math.reduce_sum(conf_loss, axis=[1,2,3])
+
+    return tf.math.reduce_mean(cls_loss+box_loss+conf_loss)
                                 </code>
                             </pre>
                         </td>
