@@ -38,17 +38,13 @@
                         Joseph Redmon∗, Santosh Divvala∗†, Ross Girshick¶, Ali Farhadi∗†<br>
                         University of Washington∗, Allen Institute for AI†, Facebook AI Research¶
                     </p>
-                    <ul>
-                        <li>𝐵=2  의 효과를 검증하기 위한 구현임.</li>
-                        <li>Computing Limits로 Tensorflow에서 제공하는 ImageNet 데이터셋으로 사전 훈련된(pre-trained) VGG16 네트워크를 Backbone으로 사용함.</li>
-                    </ul>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            Import Library
+                        <td style="width: 30%;">
+                            먼저, 라이브러리를 불러온다.
                         </td>
-                        <td>
+                        <td style="width: 70%;">
                             <pre>
                                 <code>
 import cv2
@@ -70,7 +66,7 @@ except RuntimeError as e:
                     </tr>
                     <tr>
                         <td>
-                            Pre-trained VGG16 Backbone
+                            텐서플로에서 제공하는 ImageNet 데이터셋으로 사전 훈련된(Pre-trained) VGG16을 불러온다.
                         </td>
                         <td>
                             <pre>
@@ -86,7 +82,7 @@ backbone = tf.keras.applications.vgg16.VGG16(
                     </tr>
                     <tr>
                         <td>
-                            Leaky ReLU
+                            활성함수(activation function)로 마지막 레이어에서 Linear를 사용하고, 나머지 모든 레이어는 LeakyRelu를 사용한다.
                         </td>
                         <td>
                             <pre>
@@ -103,7 +99,7 @@ for layer in backbone.layers:
                     </tr>
                     <tr>
                         <td>
-                            Head, Dropout, Featuremap
+                            드롭아웃(Dropout) 레이어는 비율을 0.5로 하여 첫 FC 레이어 뒤에 둔다.
                         </td>
                         <td>
                             <pre>
@@ -155,7 +151,7 @@ yolo = tf.keras.Model(inputs=backbone.input, outputs=x, name='Yolo')
                     </tr>
                     <tr>
                         <td>
-                            Loss Function
+                            손실함수(loss function)
                         </td>
                         <td>
                             <pre>
@@ -194,10 +190,7 @@ def get_iou(box1, box2):
 
     union = area_box1 + area_box2 - area_i + 1e-8
     return tf.expand_dims((area_i / union), axis=-1)
-                                </code>
-                            </pre>
-                            <pre>
-                                <code>
+
 def loss_function(true, pred, coord=5.0, noobj=0.5):
     true_conf = true[..., :1]
     true_boxes = true[..., 1:5]
@@ -284,6 +277,28 @@ def loss_function(true, pred, coord=5.0, noobj=0.5):
                             </pre>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            학습하는 동안 배치 사이즈는 64, Optimizer의 모멘텀은 0.9, Decay는 0.0005로 한다.
+                        </td>
+                        <td>
+                            <pre>
+                                <code>
+sgd = tf.keras.optimizers.legacy.SGD(
+    learning_rate=1e-3,
+    momentum=0.9,
+    decay=5e-4
+)
+
+yolo.compile(
+    sgd,
+    loss_function,
+)
+                                </code>
+                            </pre>
+                        </td>
+                    </tr>
+                    
                 </tbody>
             </table>
         </article>
