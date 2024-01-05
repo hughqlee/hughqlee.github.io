@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Henry Hyunkyu Lee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+    <script>hljs.highlightAll();</script>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        tr {
+            border-bottom: 1px solid lightgray;
+        }
+        tr:last-child {
+            border-bottom: none;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -30,14 +48,45 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Post start -->
+                    <tr>
+                        <th>
+                            2024-01-05
+                        </th>
+                        <td>
+                            javascript로 python server에 통신하기.
+<pre><code class="javascript">
+csrftoken = getCookie('csrftoken')
+array = Array(...)
+
+fetch('/', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken,
+    },
+    body: JSON.stringify(array)
+})
+</code></pre>
+<pre><code class="python">
+import json
+
+items = json.loads(request.body)
+</code></pre>
+csrftoken 부분은 re-confirm하기.
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
                     <tr>
                         <th>
                             2024-01-04
                         </th>
                         <td>
-                            Profile과 Blog(TIL)로 간소화. 2024년 잔디심기 목표 설정: 1)TIL 2)HTML 및 CSS로 꾸미기.
+                            Profile과 Blog(TIL)로 간소화.<br> 2024년 잔디심기 목표 설정: 1)TIL 2)HTML 및 CSS로 꾸미기.
                         </td>
                     </tr>
+                    <!-- Post end -->
                     <tr>
                         <th>
                             2023-11-23
