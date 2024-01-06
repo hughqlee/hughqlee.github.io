@@ -15,11 +15,20 @@
         table {
             border-collapse: collapse;
         }
+        thead {
+            border-bottom: 1px solid lightgray;
+        }
         tr {
             border-bottom: 1px solid lightgray;
         }
         tr:last-child {
             border-bottom: none;
+        }
+        th, td {
+            padding: 10px;
+        }
+        i {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -40,7 +49,7 @@
     </header>
     <main>
         <article>
-            <table style="width: 100%;">
+            <table>
                 <thead>
                     <tr>
                         <th>일자</th>
@@ -48,6 +57,38 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Post start -->
+                    <tr>
+                        <th>
+                            2024-01-06
+                        </th>
+                        <td>
+                            <p>
+                                <b>html datalist</b><br>
+                                the <i>list</i> of <i>input</i> should be same with the <i>id</i> of <i>datalist</i>.
+                            </p>
+                            <input type="text" name="search" id="search" list="phones">
+                            <datalist id="phones">
+                                <option value="iPhone"></option>
+                                <option value="Galaxy"></option>
+                                <option value="Blackberry"></option>
+                            </datalist>
+                            <input type="button" value="search">
+                            
+<pre><code class="html">
+&lt;input type="text" name="search" id="search" list="phones"&gt;
+&lt;datalist id="phones"&gt;
+    &lt;option value="iPhone"&gt;&lt;/option&gt;
+    &lt;option value="Galaxy"&gt;&lt;/option&gt;
+    &lt;option value="Blackberry"&gt;&lt;/option&gt;
+&lt;/datalist&gt;
+&lt;input type="button" value="search"&gt;
+</code></pre>
+
+다 좋은데, 데이터가 많아지면 ugly해서 picocss에서는 지원하지 않는다고...
+                        </td>
+                    </tr>
+                    <!-- Post end -->
                     <!-- Post start -->
                     <tr>
                         <th>
