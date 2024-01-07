@@ -4,12 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Henry Hyunkyu Lee</title>
+    <style>
+        .breadcrumb {
+            list-style: none;
+        }
+        .breadcrumb li {
+            display: inline;
+            margin-right: 5px;
+        }
+        .breadcrumb li:not(:last-child)::after {
+            content: '/'; /* Separator between breadcrumb items */
+            margin-left: 5px;
+            margin-right: 5px;
+            color: #999; /* Color for the separator */
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Henry Lee (이현규)</h1>
         <nav>
-            <ul>
+            <ul class="breadcrumb">
                 <li>
                     <a href="index.html">Profile</a>
                 </li>

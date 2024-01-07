@@ -30,13 +30,26 @@
         i {
             font-weight: bold;
         }
+        .breadcrumb {
+            list-style: none;
+        }
+        .breadcrumb li {
+            display: inline;
+            margin-right: 5px;
+        }
+        .breadcrumb li:not(:last-child)::after {
+            content: '/'; /* Separator between breadcrumb items */
+            margin-left: 5px;
+            margin-right: 5px;
+            color: #999; /* Color for the separator */
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Henry Lee (이현규)</h1>
         <nav>
-            <ul>
+            <ul class="breadcrumb">
                 <li>
                     <a href="index.html">Profile</a>
                 </li>
@@ -57,6 +70,42 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Post start -->
+                    <tr>
+                        <th>
+                            2024-01-07
+                        </th>
+                        <td>
+                            <p>
+                                <b>selenium ver.4 with Edge browser</b>
+                            </p>             
+<pre><code class="python">
+from selenium import webdriver
+from selenium.webdriver.edge.service import Service
+from selenium.webdriver.edge.options import Options
+from selenium.webdriver.common.by import By
+
+driver = 'path/to/msedgedriver.exe'
+service = Service(driver)
+
+options = Options()
+
+browser = webdriver.Edge(service=service, options=options)  
+browser.get('http://127.0.0.1:5500/example.html')
+browser.implicitly_wait(2)
+
+specific_element = browser.find_element(By.ID, 'id_name')
+next_element = specific_element.find_element(By.XPATH, 'following-sibling::*[1]')
+# by XPath, following-sibling 키워드로 같은 계층 elements :: 전체(*) 중 첫[1] element
+
+print(next_element.text)
+browser.quit()
+</code></pre>
+
+By가 핵심 변경점!
+                        </td>
+                    </tr>
+                    <!-- Post end -->
                     <!-- Post start -->
                     <tr>
                         <th>
