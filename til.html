@@ -73,6 +73,39 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-01-08
+                        </th>
+                        <td>
+                            Python list는 대괄호[] 내에 작은 따옴표로 element가 존재함. 때문에 JSON.parse에서 에러 발생.<br>
+                            작은 따옴표를 큰 따옴표로 replace한 후 JSON.parse() 통해서 handling할 수 있게 함.
+<pre><code class="python">
+# Django views.py
+def view(request):
+    ...
+    datas = ['elm1', 'elm2', 'elm3', 'elm4']
+    return render(request, 'template.html', {'datas': datas})
+</code></pre>
+<pre><code class="html">
+&lt;!--template.html--&gt;
+&lt;div datas="{{datas}}"&gt;
+</code></pre>        
+<pre><code class="javascript">
+// script
+const data_string = document.getElementById('keywords').getAttribute('datas');
+const data_preprocessed = data_string.replace(/'/g, '"');
+if (data_string !== '') {
+    const data_array = JSON.parse(data_preprocessed)
+    data_array.forEach(element => {
+        ...
+    });
+}
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-07
                         </th>
                         <td>
