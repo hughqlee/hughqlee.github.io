@@ -73,6 +73,37 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-01-10
+                        </th>
+                        <td>
+                            구글 SMTP 사용하기.<br>
+                            계정 설정, 2단계 인증 후 앱 비밀번호 발급 필수
+<pre><code class="python">
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'henrylee@zefit.co.kr'
+EMAIL_HOST_PASSWORD = '앱비밀번호without공백'
+</code></pre>
+<pre><code class="python">
+# views.py
+from django.core.mail import send_mail
+
+send_mail(
+    subject='메일 제목',
+    message='메일 내용',
+    from_email='noreply@zefit.co.kr' # not working, need to check
+    recipient_list = ['수신 이메일',]
+    fail_silently=False, # 실패시 에러창(디버깅) return
+)
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-09
                         </th>
                         <td>
@@ -84,7 +115,6 @@ sorted_list = sorted(
     key=lambda item: item[1],
     reverse=True
 )
-</code></pre>
 </code></pre>
                         </td>
                     </tr>
