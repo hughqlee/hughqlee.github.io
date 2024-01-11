@@ -73,6 +73,24 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-01-11
+                        </th>
+                        <td>
+                            selenium Select로 HTML Dropdown 다루기.
+<pre><code class="python">
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+
+select_element = driver.find_element(By.TAG_NAME, 'select')
+select = Select(select_element)
+select.select_by_index(3) # 4th option has idx 3.
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-10
                         </th>
                         <td>
