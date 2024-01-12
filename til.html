@@ -73,6 +73,42 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-01-12
+                        </th>
+                        <td>
+                            Django ManyToManyFiled 필터링 하기.
+<pre><code class="python">
+from django.db.models import Model
+
+class Gene(Model):
+    name = CharField()
+
+
+class Drug(Model):
+    name = CharField()
+    gene = ManyToManyFiled(Gene)
+
+
+class Indication(Model):
+    name = CharField()
+    drug = ManyToManyFiled(Drug)
+</code></pre>
+<pre><code class="python">
+from .models import Drug, Indication
+
+def view(request, pk):
+    '''
+    pk는 gene의 pk
+    '''
+    drugs = Drug.objects.filter(gene_pk=pk) #-> QuerySet
+    indications = Indication.objects.filter(drug_in=drugs)
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-11
                         </th>
                         <td>
