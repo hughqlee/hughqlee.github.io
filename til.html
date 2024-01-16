@@ -73,6 +73,38 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-01-16
+                        </th>
+                        <td>
+                            selenium "out of memory" issue. <br>
+                            엣지(Edge) 브라우저가 out of memory 오류로 이상 종료되고, 크롤링이 중단되는 이슈를 배치 프로세싱으로 해결.
+<pre><code class="python">
+batch_size = 1000
+starts = 시작_idx
+max_idx = 총_idx
+for batch_starts in range(starts, max_idx, batch_size):
+    batch_ends = min(batch_starts+batch_size, max_idx)
+    # 배치 구성하고 배치 별로 브라우저 실행하여 크롤링 수행.
+    driver = webdriver.Edge(service=service, options=options)
+    driver.implicitly_wait(2)
+    for i in range(batch_starts, batch_ends):
+        url = 사이트_주소
+        driver.get(url)
+        '''
+        크롤링 수행 코드
+        '''
+    # 배치 별 브라우저 메모리 점유 삭제하고 종료.
+    driver.delete_all_cookies()
+    driver.execute_script("window.localStorage.claer();")
+    driver.execute_script("window.sessionStorage.claer();")
+    driver.quit()
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-15
                         </th>
                         <td>
