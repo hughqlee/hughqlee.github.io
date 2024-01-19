@@ -69,11 +69,10 @@
                         <th>내용</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Post start -->
+                <tbody><!-- Post start -->
                     <tr>
                         <th>
-                            2024-01-18
+                            2024-01-19
                         </th>
                         <td>
                             Django Template Filter 만들어 쓰기 (Customize)<br>
@@ -95,6 +94,54 @@ def multiply(value, arg):
 {% load filters %}
 
 {{ obj.rate|multiply:100|floatformat:2 }} %
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
+                            2024-01-17
+                        </th>
+                        <td>
+                            리스트 일부 노출 후 더보기 기능 구현<br>
+                            tr을 display: none;으로 가리고 initIndications()을 통해서 일부(5개) 먼저 노출.<br>
+                            그리고 버튼 클릭시 전체 노출하고 버튼을 가리기.
+<pre><code class="html">
+&lt;tbody&gt;
+    {% for indication in indications %}
+    &lt;tr class="indication" style="display: none;"&gt;
+        &lt;td&gt;
+            {{ indication }}
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    {% endfor %}
+&lt;/tbody&gt;
+&lt;/table&gt;
+{% if indications %}
+&lt;button class="secondary outline" style="width: 120px; margin-left: 20px;" onclick="seeMore()"&gt;
+    More
+&lt;button&gt;
+{% endif %}
+</code></pre>
+<pre><code class="javascript">
+function initIndications() {
+    const indications = document.getElementsByClassName("indication");
+    for (let i=0; i<5; i++) {
+        indications[i].style.display = 'table-row';
+    };
+}
+initIndications()
+
+function seeMore() {
+    const indications = document.getElementsByClassName("indication");
+    for (let i=0; i&lt;indications.length; i++) {
+        indications[i].style.display = 'table-row';
+    };
+
+    const btnMore = document.querySelector(".secondary");
+    btnMore.style.display = 'none';
+}
 </code></pre>
                         </td>
                     </tr>
