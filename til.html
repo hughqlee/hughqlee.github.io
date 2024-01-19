@@ -73,47 +73,28 @@
                     <!-- Post start -->
                     <tr>
                         <th>
-                            2024-01-17
+                            2024-01-18
                         </th>
                         <td>
-                            리스트 일부 노출 후 더보기 기능 구현<br>
-                            tr을 display: none;으로 가리고 initIndications()을 통해서 일부(5개) 먼저 노출.<br>
-                            그리고 버튼 클릭시 전체 노출하고 버튼을 가리기.
-<pre><code class="html">
-&lt;tbody&gt;
-    {% for indication in indications %}
-    &lt;tr class="indication" style="display: none;"&gt;
-        &lt;td&gt;
-            {{ indication }}
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    {% endfor %}
-&lt;/tbody&gt;
-&lt;/table&gt;
-{% if indications %}
-&lt;button class="secondary outline" style="width: 120px; margin-left: 20px;" onclick="seeMore()"&gt;
-    More
-&lt;button&gt;
-{% endif %}
+                            Django Template Filter 만들어 쓰기 (Customize)<br>
+                            Data의 형태가 0.289467와 같이 float type일 때, 28.94 %와 같이 퍼센트로 표시하고 싶었으나, 기본 템플릿 필터에는 해당 기능 없음.<br>
+                            포인트는 html에서 load하는 부분과 python에서 register.filter하는 부분.<br>
+                            floatformat:2로 소수점 둘째자리까지 표시하는 것도 꺠알 팁! 
+<pre><code class="python">
+# project_name/app_name/templatetags/__init__.py 있어야 하나?
+# project_name/app_name/templatetags/filters.py
+
+from django import template
+
+register = template.Library()
+@register.filter
+def multiply(value, arg):
+    return value*arg
 </code></pre>
-<pre><code class="javascript">
-function initIndications() {
-    const indications = document.getElementsByClassName("indication");
-    for (let i=0; i<5; i++) {
-        indications[i].style.display = 'table-row';
-    };
-}
-initIndications()
+<pre><code class="html">
+{% load filters %}
 
-function seeMore() {
-    const indications = document.getElementsByClassName("indication");
-    for (let i=0; i&lt;indications.length; i++) {
-        indications[i].style.display = 'table-row';
-    };
-
-    const btnMore = document.querySelector(".secondary");
-    btnMore.style.display = 'none';
-}
+{{ obj.rate|multiply:100|floatformat:2 }} %
 </code></pre>
                         </td>
                     </tr>
