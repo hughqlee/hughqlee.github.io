@@ -79,7 +79,59 @@
                         <th>내용</th>
                     </tr>
                 </thead>
-                <tbody><!-- Post start -->
+                <tbody>
+                    <!-- Post start -->
+                    <tr>
+                        <th>
+                            2024-01-23
+                        </th>
+                        <td>
+                            HTML input tag's minlength
+                            <form action="#">
+                                <input type="text" minlength="3">
+                                <input type="submit" value="search">
+                            </form>
+<pre><code class="html">
+&lt;form action="#"&gt;
+    &lt;input type="text" minlength="3"&gt;
+    &lt;input type="submit" value="search"&gt;
+&lt;/form&gt;
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
+                            2024-01-22
+                        </th>
+                        <td>
+                            Delete duplicates by 'name' at django.<br>
+                            exclude()가 포인트!
+<pre><code class="python">
+from django.db.models import Count
+from app_name.models import Model_name
+
+duplicates_names = Model_name.objects.values('name').annotate(count=Count('id')).filter(count__gt=1)
+for duplicate in duplicates_names:
+    name = duplicate['name']
+    duplicate_records = Model_name.objects.filter(name=name)
+
+    besk_pk = None
+    for record in duplicate_records:
+        if not best_pk:
+            best_pk = record.pk
+            best_cnt = record.cnt_drugs()
+        elif record.cnt_drugs() > best_cnt:
+            best_pk = record.pk
+            best_cnt = record.cnt_drugs()
+
+    duplicate_records.exclude(pk=best_pk).delete()
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
                     <tr>
                         <th>
                             2024-01-19
