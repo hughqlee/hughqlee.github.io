@@ -83,6 +83,85 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-01-25
+                        </th>
+                        <td>
+                            AWS EC2 Django Project Deployment
+<pre><code class="python">
+/etc
+|- nginx
+    |- sites-available
+        |- django_project
+    |- sites-enabled
+|- systemd
+    |- system
+        |- gunicorn.service
+        |- gunicorn.socket
+/home
+|- ubuntu
+    |- .local
+        |- bin
+            |- gunicorn
+    |- django_project
+        |- django_app
+            |- settings.py
+            |- wsgi.py
+/tmp
+|- gunicorn.sock
+/var
+|- log
+    |- nginx
+        |- access.log
+        |- error.log
+</code></pre>
+<pre><code>
+# /etc/systemd/system/gunicorn.service
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/django_project
+ExecStart=/home/ubuntu/.local/bin/gunicorn \
+        --workers 3 \
+        --bind unix:/tmp/gunicorn.sock \
+        django_app.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<pre><code>
+# /etc/nginx/sites-available/django_project
+server {
+    listen 80;
+    server_name aws_elastic_ip;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static {
+        alias /home/ubuntu/django_project/static;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/tmp/gunicorn.sock;
+    }
+}
+</code></pre>
+<pre><code class="bash">
+> sudo systemctl daemon-reload
+> sudo systemctl enable gunicorn.service
+> sudo ln -s /etc/nginx/sites-available/django_project /etc/nginx/sites-enabled
+> sudo systemctl start gunicorn nginx
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-23
                         </th>
                         <td>
