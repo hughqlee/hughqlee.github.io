@@ -83,6 +83,30 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-01-26
+                        </th>
+                        <td>
+                            가비아 도메인 구매 (zenolink.co.kr)
+                            네임서버 설정 (AWS Route53과 연결)
+                            DNS관리 (레코드)
+<pre><code>
+A @ AWS_ELASTIC_IP TTL_600_DEFAULT (zenolink.co.kr를 AWS에 연결)
+A www AWS_ELASTIC_IP TTL_600_DEFAULT (www.zenolink.co.kr를 AWS에 연결)
+TXT @ SSL_SECRET_AUTH TTL_600_DEFAULT (ssl을 발급받기 위한 DNS 인증)
+</code></pre>
+                            AWS Route53 호스팅 영역 레코드 생성
+<pre><code>
+zenolink.co.kr A 단순 AWS_ELASTIC_IP TTL_300_DEFAULT
+zenolink.co.kr NS 단순 AWS_DOMAIN_DEFAULT TTL_60 (가비아 네임서버와 연결)
+zenolink.co.kr SOA 단순 AWS_DOMAIN_DEFAULT TTL_900
+www.zenolink.co.kr CNAME 단순 zenolink.co.kr TTL_300_DEFAULT
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-25
                         </th>
                         <td>
