@@ -83,6 +83,40 @@
                     <!-- Post start -->
                     <tr>
                         <th>
+                            2024-02-02
+                        </th>
+                        <td>
+                            EC2 재부팅 후 /tmp 경로에 pem 파일 지워져 nginx 오류로 웹페이지 접근 안됨.<br>
+                            다시 pem 파일 생성하여 해결.
+<pre><code class="bash">
+$ sudo systemctl status nginx
+nginx: [emerg] cannot load ertificate "/tmp/my_domain.pem": ...
+nginx: configuration file /etc/nginx/nginx.conf test failed
+nginx.service: Control process exited, code=exited, status=1/FAILURE
+nginx.service: Failed with result 'exit-code'.
+Failed to start A high performance web server and a reverse proxy server.
+
+$ cd /tmp
+/tmp$ ls
+my_domain.key
+my_domain_cert.crt
+my_domain_chian_cert.crt
+my_domain_root_cert.crt
+
+/tmp$ cat my_domain_cert.crt my_domain_chian_cert.crt my_domain_root_cert.crt > my_domain.pem
+/tmp$ ls
+my_domain.key
+my_domain.pem
+my_domain_cert.crt
+my_domain_chian_cert.crt
+my_domain_root_cert.crt
+</code></pre>
+                        </td>
+                    </tr>
+                    <!-- Post end -->
+                    <!-- Post start -->
+                    <tr>
+                        <th>
                             2024-01-26
                         </th>
                         <td>
