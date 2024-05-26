@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toy</title>
+    <style>
+        div {
+            display: flex;
+        }
+        table {
+            width: 100%;
+            text-align: center;
+        }
+        form {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p>0</p>
+        <button onclick="location.reload()">Reset</button>
+    </div>
+    <table>
+        <thead>
+            <th>순위</th>
+            <th>팀명</th>
+            <th>경기</th>
+            <th>승</th>
+            <th>무</th>
+            <th>패</th>
+            <th>승점</th>
+        </thead>
+        <tbody>
+            <!-- 여기에 데이터 표시 -->
+        </tbody>
+    </table>
+    <form>
+        <input type="radio" name="result" value="이">이</input>
+        <input type="radio" name="result" value="손">손</input>
+        <input type="radio" name="result" value="무">무</input>
+    </form>
+    <form>
+        <input type="radio" name="result" value="이">이</input>
+        <input type="radio" name="result" value="조">조</input>
+        <input type="radio" name="result" value="무">무</input>
+    </form>
+    <form>
+        <input type="radio" name="result" value="손">손</input>
+        <input type="radio" name="result" value="조">조</input>
+        <input type="radio" name="result" value="무">무</input>
+    </form>
+    <form>
+        <input type="radio" name="result" value="이">이</input>
+        <input type="radio" name="result" value="손">손</input>
+        <input type="radio" name="result" value="무">무</input>
+    </form>
+    <form>
+        <input type="radio" name="result" value="이">이</input>
+        <input type="radio" name="result" value="조">조</input>
+        <input type="radio" name="result" value="무">무</input>
+    </form>
+</body>
+<script>
+    const p = document.querySelector('p');
+    const tbody = document.querySelector('tbody');
+
+    var matches = 0
+    const datas = [
+        {팀:'손', 경기:19, 승:7, 무:7, 패:5},
+        {팀:'이', 경기:18, 승:5, 무:9, 패:4},
+        {팀:'조', 경기:19, 승:3, 무:10, 패:6},
+    ]
+
+    const forms = document.querySelectorAll('form')
+    forms.forEach(form => {
+        form.addEventListener('change', (event) => {
+            matches += 1;
+            p.innerText = matches;
+
+            const inputs = form.querySelectorAll('input');
+            const checked = form.querySelector('input:checked').value;
+
+            inputs.forEach(input => {
+                const value = input.value
+                if (value !== '무') {
+                    // 결과에 상관없이 참가 팀의 경기 수 증가
+                    const team_data = datas.find(data => data.팀 == value);
+                    team_data.경기 += 1;
+                    if (checked === '무') {
+                        team_data.무 += 1
+                    }  else if (checked === value) {
+                        const team_data = datas.find(data => data.팀 == value);
+                        team_data.승 += 1;
+                    } else {
+                        const team_data = datas.find(data => data.팀 == value);
+                        team_data.패 += 1;
+                    }
+                }
+            });
+
+            tbody.innerHTML = ''
+            const sorted_datas = datas.sort((a,b) => (b.승*3+b.무) - (a.승*3+a.무))
+            sorted_datas.forEach((data, idx) => {
+                const tr = document.createElement('tr');
+                tbody.appendChild(tr)
+                const th = document.createElement('th');
+                th.innerText = idx+1;
+                tr.appendChild(th);
+                for (let key in data) {
+                    let td = document.createElement('td');
+                    td.innerText = data[key];
+                    tr.appendChild(td);
+                }
+                const td = document.createElement('td');
+                td.innerText = 3*data.승 + data.무
+                tr.appendChild(td);
+            })
+        });
+    });
+</script>
+</html>
